@@ -1,0 +1,33 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: hidden;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+}
+
+.container {
+  flex: 1;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background-color: #008000;
+}
+
+.container p {
+  display: block;
+  font-size: 50px;
+  margin-bottom: 5vh;
+
+  font-family: 'Red Rose', cursive;
+  color: red;
+  padding: 0 10%;
+  text-align: center;
+}
