@@ -2,7 +2,7 @@ const connection = require('../database/connection');
 
 module.exports = {
   async index(request, response) {
-    const contents = await connection('cult_content').select('*');
+    const contents = await connection('cult_content').join('content', 'cult_content.content_id', '=', 'content.id').select('*');
 
     return response.json(contents);
   },
