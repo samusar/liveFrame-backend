@@ -23,7 +23,7 @@ app.get('/live/slide/:number', (req, res) => {
   const {number} = req.params;
   positionSlide = number;
 
-  sockets.emit('next-slide', positionSlide);
+  sockets.emit('next-slide', Number(positionSlide));
     
   return res.send();
 });
