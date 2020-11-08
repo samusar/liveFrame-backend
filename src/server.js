@@ -14,6 +14,7 @@ const server = http.createServer(app);
 const sockets = socketio(server);
 
 app.use("/screen", express.static('public'));
+app.use("/monitor", express.static('public/monitor'));
 
 var slides = [];
 var positionSlide = 0;

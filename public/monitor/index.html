@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Red+Rose&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="./styles.css">  
+  <title>LirioFrame</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div class="container">
+    <p id="legend"></p>
+  </div>
+  
+  <script>
+    const fieldLegend = document.getElementById('legend');
+    
+    var slides = [];
+    var visible = false;
+    var index = 0;
+    
+    const atualizaLegenda = function () {
+      if(slides.length > 0) {
+        if(visible){
+          fieldLegend.innerHTML = slides[index];
+        }else{
+          fieldLegend.innerHTML = '';
+        }
+      }
+    }
+    
+    const socket = io();
+    
+    socket.on('connect', () => {
+      const player = socket.id;
+    });
+
+    socket.on('next-slide', (indexNext) => {
+      index = indexNext;
+      atualizaLegenda();
+    });
+
+    socket.on('visible-content', (visibility) => {
+      visible = visibility;
+      atualizaLegenda();
+    });
+
+    socket.on('update-content', (data) => {
+      slides = data.slides;
+      visible = data.visible;
+      index = data.positionSlide;
+      atualizaLegenda();
+    });
+  </script>
+</body>
+</html>
