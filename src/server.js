@@ -18,22 +18,23 @@ app.use("/monitor", express.static('public/monitor'));
 
 var slides = [];
 var positionSlide = 0;
-var visible = false;
+var visible = 'false';
 
 app.get('/live/slide/:number', (req, res) => {
   const {number} = req.params;
   positionSlide = number;
 
-  sockets.emit('next-slide', Number(positionSlide));
+  sendInfoUpdated();
     
   return res.send();
 });
 
 app.get('/live', (req, res) => {
   const {visibility} = req.query;
-  visible = visibility === 'true';
-
-  sockets.emit('visible-content', visible);
+  console.log('o que é isso', visibility);
+  sendInfoUpdated({
+    visible: visibility === 'true' ? visibility : 'false'
+  });
     
   return res.send();
 });
@@ -54,7 +55,20 @@ app.get('/live/content/:id', async (req, res) => {
   return res.send();
 });
 
-function sendInfoUpdated(){
+function sendInfoUpdated(data = null){
+  if(data) {
+    if(data.slides) {
+      slides = data.slides;
+    }
+    if(data.positionSlide) {
+      positionSlide = data.positionSlide;
+    }
+    if(data.visible) {
+      visible = data.visible;
+    }
+  }
+
+  console.log('enviar', slides, positionSlide, visible);
   sockets.emit('update-content', {slides, positionSlide, visible});
 }
 
@@ -62,7 +76,7 @@ function sendInfoUpdated(){
 sockets.on('connection', (socket) => {
   const client = socket.id;
   console.log('Client connected', client);
-  sendInfoUpdated();
+  socket.emit('update-content', {slides, positionSlide, visible})
 });
 
 server.listen(3333, () => {

@@ -36,20 +36,10 @@
       const player = socket.id;
     });
 
-    socket.on('next-slide', (indexNext) => {
-      index = indexNext;
-      atualizaLegenda();
-    });
-
-    socket.on('visible-content', (visibility) => {
-      visible = visibility;
-      atualizaLegenda();
-    });
-
     socket.on('update-content', (data) => {
-      slides = data.slides;
-      visible = data.visible;
-      index = data.positionSlide;
+      this.slides = data.slides;
+      this.visible = data.visible === 'true';
+      this.index = data.positionSlide;
       atualizaLegenda();
     });
   </script>
