@@ -3,7 +3,9 @@ const http = require('http');
 const socketio = require('socket.io');
 const routes = require('./routes');
 const connection = require('./database/connection');
-
+const { networkInterfaces } = require('os');
+const nets = networkInterfaces();
+const results = Object.create(null);
 
 const app = express();
 
@@ -31,7 +33,6 @@ app.get('/live/slide/:number', (req, res) => {
 
 app.get('/live', (req, res) => {
   const {visibility} = req.query;
-  console.log('o que é isso', visibility);
   sendInfoUpdated({
     visible: visibility === 'true' ? visibility : 'false'
   });
@@ -68,17 +69,25 @@ function sendInfoUpdated(data = null){
     }
   }
 
-  console.log('enviar', slides, positionSlide, visible);
   sockets.emit('update-content', {slides, positionSlide, visible});
 }
 
 
 sockets.on('connection', (socket) => {
   const client = socket.id;
-  console.log('Client connected', client);
   socket.emit('update-content', {slides, positionSlide, visible})
 });
 
 server.listen(3333, () => {
-  console.log('server started on 3333');
+  for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+      if (net.family === 'IPv4' && !net.internal) {
+        if (!results[name]) {
+            results[name] = [];
+        }
+        results[name].push(net.address);
+      }
+    }
+  }
+  console.log(`Meu IP: ${results["en0"][0]}`);
 });
