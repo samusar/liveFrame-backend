@@ -79,15 +79,5 @@ sockets.on('connection', (socket) => {
 });
 
 server.listen(3333, () => {
-  for (const name of Object.keys(nets)) {
-    for (const net of nets[name]) {
-      if (net.family === 'IPv4' && !net.internal) {
-        if (!results[name]) {
-            results[name] = [];
-        }
-        results[name].push(net.address);
-      }
-    }
-  }
-  console.log(`Meu IP: ${results["en0"][0]}`);
+  console.log('Live frame está online ▶️');
 });
