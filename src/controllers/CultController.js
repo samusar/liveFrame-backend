@@ -22,5 +22,10 @@ module.exports = {
     await connection('cult_content').where('content_id',id).del();    
 
     return response.send();
+  },
+  async removeAll(request, response) {
+    await connection('cult_content').del();    
+
+    return response.send();
   }
 }

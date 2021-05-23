@@ -13,5 +13,6 @@ routes.post('/content', ContentController.create);
 routes.get('/cult', CultController.index);
 routes.post('/cult', CultController.add);
 routes.delete('/cult/:id', CultController.remove);
+routes.delete('/cult', CultController.removeAll);
 
 module.exports = routes;
